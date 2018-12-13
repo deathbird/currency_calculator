@@ -1,0 +1,21 @@
+{% extends 'base_bulma.html.twig' %}
+
+ {% block body %}
+
+     <section class="section"
+              id="calculator"
+              data-currencies="{{ currencies }}"
+              data-rates="{{ rates }}"
+              data-currency-insert-route="{{ path('app_currency_insert_route') }}"
+              data-rates-insert-route="{{ path('app_rates_insert_route') }}"
+              data-rates-edit-route="{{ path('app_rates_update_route') }}">
+     </section>
+
+ {% endblock %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+
+    <script src="{{ asset('js/bundles/react_bundle_calculator.js') }}"></script>
+{% endblock %}
