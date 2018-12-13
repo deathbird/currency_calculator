@@ -11,6 +11,12 @@ namespace App\Services;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+/**
+ * Service class for retrieving and persisting exchange rates. Persists rates in user session.
+ * On new user session uses some fixed rates to prepopulate session.
+ *
+ * @package App\Services
+ */
 class RatesService
 {
     private $storage;
@@ -20,6 +26,11 @@ class RatesService
         $this->storage = $session;
     }
 
+    /**
+     * Retrieve exchange rates.
+     *
+     * @return array|mixed
+     */
     public function getExchangeRates()
     {
         $val = $this->storage->get('rates');
@@ -74,6 +85,16 @@ class RatesService
         return $val;
     }
 
+    /**
+     * Persist a new exchange rate.
+     *
+     * @param $base   Base currency code.
+     * @param $target Target currency code.
+     * @param $rate   The exchange rate (float)
+     *
+     * @return bool
+     * @throws \Exception
+     */
     public function insert($base, $target, $rate)
     {
         $rates = $this->storage->get('rates');
@@ -85,6 +106,16 @@ class RatesService
         return true;
     }
 
+    /**
+     * Update an existing exchange rate.
+     *
+     * @param $base   Base currency code.
+     * @param $target Target currency code.
+     * @param $rate   The exchange rate (float)
+     *
+     * @return bool
+     * @throws \Exception
+     */
     public function update($base, $target, $rate)
     {
         $rates = $this->storage->get('rates');

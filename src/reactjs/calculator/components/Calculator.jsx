@@ -1,5 +1,5 @@
 /**
- * Calculator component
+ * Calculator functionality component
  */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
@@ -25,16 +25,30 @@ class Calculator extends Component {
         this.calculateTarget = this.calculateTarget.bind(this)
     }
 
+    /**
+     * Retrieve first target currency (code) for given base currency code.
+     *
+     * @param baseCurrency
+     * @param rates
+     * @returns {string}
+     */
     getFirstTargetCurrency(baseCurrency, rates) {
         const targetRates = rates[baseCurrency].rates
         return Object.keys(targetRates)[0]
     }
 
+    /**
+     * When a currency is selected.
+     *
+     * @param e
+     */
     handleCurrencyChange(e) {
         e.preventDefault()
         // log('change', e.target.name, e.target.value)
         this.setState({[e.target.name]: e.target.value})
         if (e.target.name === 'baseCurrency') {
+            // if a base currency is selected then select the first target
+            // currency and calculate the rate.
             const targetCurrency = this.getFirstTargetCurrency(e.target.value, this.props.rates)
             this.setState({targetCurrency: targetCurrency})
             this.calculateTarget(e.target.value, targetCurrency, this.state.baseValue)
@@ -43,6 +57,11 @@ class Calculator extends Component {
         }
     }
 
+    /**
+     * When a rate is changed calculate the opposite rate.
+     *
+     * @param e
+     */
     handleValueChange(e) {
         e.preventDefault()
         this.setState({[e.target.name]: e.target.value})
@@ -53,15 +72,28 @@ class Calculator extends Component {
         }
     }
 
+    /**
+     * Calculate base currency ratio based on a target currency rate.
+     *
+     * @param baseCurrency
+     * @param targetCurrency
+     * @param fromValue
+     */
     calculateBase(baseCurrency, targetCurrency, fromValue) {
         const value = round(fromValue / this.props.rates[baseCurrency].rates[targetCurrency], ROUND_DECIMALS)
-        log('calculateBase', fromValue, value, 'base', baseCurrency, 'target', targetCurrency, this.props.rates)
+        // log('calculateBase', fromValue, value, 'base', baseCurrency, 'target', targetCurrency, this.props.rates)
         this.setState({baseValue: value})
     }
 
+    /**
+     * Calculate target currency ratio based on a base currency rate.
+     * @param baseCurrency
+     * @param targetCurrency
+     * @param fromValue
+     */
     calculateTarget(baseCurrency, targetCurrency, fromValue) {
         const value = round(fromValue * this.props.rates[baseCurrency].rates[targetCurrency], ROUND_DECIMALS)
-        log('calculateTarget', fromValue, value, 'base', baseCurrency, 'target', targetCurrency, this.props.rates)
+        // log('calculateTarget', fromValue, value, 'base', baseCurrency, 'target', targetCurrency, this.props.rates)
         this.setState({targetValue: value})
     }
 

@@ -1,5 +1,5 @@
 /**
- * CurrenciesTable component
+ * Currencies listing and insert functionality component.
  */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
@@ -28,12 +28,22 @@ class CurrenciesTable extends Component {
         this.insert = this.insert.bind(this)
     }
 
+    /**
+     * When a input field is changed.
+     *
+     * @param e
+     */
     handleChange(e) {
         e.preventDefault()
         const value = e.target.name === 'code' ? e.target.value.toUpperCase() : e.target.value;
         this.setState({[e.target.name]: value})
     }
 
+    /**
+     * When a new currency is submitted.
+     *
+     * @param e
+     */
     handleSubmit(e) {
         e.preventDefault()
         if (this.state.mode === MODE_INSERT) {
@@ -43,6 +53,13 @@ class CurrenciesTable extends Component {
         }
     }
 
+    /**
+     * Show error or other message under input fields.
+     *
+     * @param text
+     * @param type
+     * @param isError
+     */
     showMessage({text, type, isError}) {
         this.setState({
             message: {
@@ -63,12 +80,22 @@ class CurrenciesTable extends Component {
         }, ERRORS_HIDE_TIMEOUT)
     }
 
+    /**
+     * Validates inputs.
+     *
+     * @returns {number | boolean}
+     */
     validate() {
         return this.state.code.length &&
             this.state.description.length &&
             new RegExp('[A-Z]{3}').test(this.state.code)
     }
 
+    /**
+     * Fetch API default options.
+     *
+     * @returns {{credentials: string, headers: Headers}}
+     */
     fetchDefaultOptions() {
         return {
             credentials: 'include',
@@ -78,6 +105,9 @@ class CurrenciesTable extends Component {
         }
     }
 
+    /**
+     * Insert new currency.
+     */
     insert() {
         const ok = this.validate()
         if (ok) {  // validation succeded

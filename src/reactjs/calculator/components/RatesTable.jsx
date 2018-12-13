@@ -1,5 +1,5 @@
 /**
- * RatesTable component
+ * Rates listing and insert/update functionality component.
  */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
@@ -59,19 +59,31 @@ class RatesTable extends Component {
         })
     }
 
+    /**
+     * When an input field is changed.
+     *
+     * @param e
+     */
     handleChange(e) {
         e.preventDefault()
         // log('change', e.target.name, e.target.value)
         this.setState({[e.target.name]: e.target.value})
+        // if base currency is selected, select the first target currency
         if (e.target.name === 'baseCurrency') {
             const targetCurrency = this.getFirstTargetCurrency(e.target.value, this.props.rates)
             this.setState({targetCurrency: targetCurrency})
         }
     }
 
+    /**
+     * When a new rate is submitted or an old one is updated.
+     *
+     * @param e
+     */
+
     handleSubmit(e) {
         e.preventDefault()
-        log('submit', e.target.name)
+        // log('submit', e.target.name)
         if (this.state.mode === MODE_INSERT) {
             this.insert()
         } else if (this.state.mode === MODE_EDIT) {
@@ -79,6 +91,13 @@ class RatesTable extends Component {
         }
     }
 
+    /**
+     * Show error or other message under input fields.
+     *
+     * @param text
+     * @param type
+     * @param isError
+     */
     showMessage({text, type, isError}) {
         this.setState({
             message: {
@@ -99,12 +118,22 @@ class RatesTable extends Component {
         }, ERRORS_HIDE_TIMEOUT)
     }
 
+    /**
+     * Validates inputs: not empty
+     *
+     * @returns {number | boolean}
+     */
     validate() {
         return this.state.baseCurrency.length &&
             this.state.targetCurrency.length &&
             this.state.rate.length
     }
 
+    /**
+     * Fetch API default options.
+     *
+     * @returns {{credentials: string, headers: Headers}}
+     */
     fetchDefaultOptions() {
         return {
             credentials: 'include',
@@ -114,6 +143,9 @@ class RatesTable extends Component {
         }
     }
 
+    /**
+     * Update existing rate.
+     */
     update() {
         const ok = this.validate()
         if (ok) {  // validation succeded
@@ -158,6 +190,9 @@ class RatesTable extends Component {
         }
     }
 
+    /**
+     * Insert new rate.
+     */
     insert() {
         const ok = this.validate()
         if (ok) {  // validation succeded
@@ -233,7 +268,6 @@ class RatesTable extends Component {
         if (this.state.baseCurrency && 'rates' in rates[this.state.baseCurrency]) {
             targetRates = rates[this.state.baseCurrency].rates
             const currenciesWithRates = Object.keys(targetRates)
-            log('HAS!!!!!!!', this.state.baseCurrency, currenciesWithRates)
             if (this.state.mode === MODE_EDIT) {
                 arrTargetCurrencies = Object.keys(targetRates).map((currKey) => {
                     return <option key={currKey} value={currKey}>{currencies[currKey]}</option>

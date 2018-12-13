@@ -16,8 +16,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * Class MainController: Main application controller, handles all actions - requests. Uses 2 services CurrenciesService
- * and CurrenciesService to retrieve and persist currencies and rates.
+ * Main application controller class, handles all actions - requests. Uses 2 services CurrenciesService and
+ * CurrenciesService to retrieve and persist currencies and rates.
  *
  * @package App\Controller
  */

@@ -12,9 +12,8 @@ namespace App\Services;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
- * Class CurrenciesService
- * Class MainController: Main application controller, handles all actions - requests. Uses 2 services CurrenciesService
- * and CurrenciesService to retrieve and persist currencies and rates.
+ * Service class for retrieving and persisting currencies. Persists currencies in user session.
+ * On new user session uses some fixed currencies to prepopulate session.
  *
  * @package App\Services
  */
@@ -27,6 +26,11 @@ class CurrenciesService
         $this->storage = $session;
     }
 
+    /**
+     * Retrieve currencies.
+     *
+     * @return array|mixed
+     */
     public function getCurrencies()
     {
         $val = $this->storage->get('currencies');
@@ -45,6 +49,15 @@ class CurrenciesService
         return $val;
     }
 
+    /**
+     * Persist a new currency.
+     *
+     * @param $code
+     * @param $description
+     *
+     * @return bool
+     * @throws \Exception
+     */
     public function insert($code, $description)
     {
         $currencies = $this->storage->get('currencies');
