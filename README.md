@@ -20,26 +20,33 @@ To keep the application simple the following where choises were made:
 
 ## Installation
 
-First clone the repo:
+The environment where the application was tested was an Ubuntu 18.04 computer with PHP 7.2 installed. Also was tested in a Windows desktop (see 4. below).
+
+1.First clone the repo:
 ```bash
 git clone https://github.com/deathbird/currency_calculator.git
 ```
 
-Then cd into the repo directory:
+2.Then cd into the repo directory:
 ```bash
 cd currency_calculator
 ```
 
-You will need composer to install all dependencies:
+3.You will need composer to install all dependencies:
 ```bash
 composer install
 ```
 
-Start the local Symfony web server. By default the web server runs in port 8000:
+4.Start the local Symfony web server. By default the web server runs in port 8000:
 ```bash
 bin/console server:start
 ```
 
-Finally open to use the application in a web browser:
+On Windows machines if the 'server:start' command is problematic try:
+```bash
+bin/console server:run
+```
+
+5.Finally open to use the application in a web browser:
 
 [http://localhost:8000/](http://localhost:8000/)
